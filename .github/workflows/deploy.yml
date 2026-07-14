@@ -1,0 +1,103 @@
+name: Deploy Next.js site to Pages
+
+on:
+  push:
+    branches: ["main"]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Allow only one concurrent deployment
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  # Build job
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Detect project directory and package manager
+        id: detect-project
+        shell: bash
+        run: |
+          if [ -f "${{ github.workspace }}/package-lock.json" ]; then
+            echo "project_dir=${{ github.workspace }}" >> $GITHUB_OUTPUT
+            echo "cache_path=${{ github.workspace }}/.next/cache" >> $GITHUB_OUTPUT
+            echo "lock_path=${{ github.workspace }}/package-lock.json" >> $GITHUB_OUTPUT
+            echo "out_path=${{ github.workspace }}/out" >> $GITHUB_OUTPUT
+            echo "manager=npm" >> $GITHUB_OUTPUT
+            echo "command=ci" >> $GITHUB_OUTPUT
+            echo "Found package-lock.json in the repository root"
+            exit 0
+          else
+            echo "Could not find package-lock.json in the repository root"
+            exit 1
+          fi
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: ${{ steps.detect-project.outputs.manager }}
+          cache-dependency-path: ${{ steps.detect-project.outputs.lock_path }}
+
+      - name: Setup Pages
+        id: pages
+        uses: actions/configure-pages@v4
+
+      - name: Restore cache
+        uses: actions/cache@v4
+        with:
+          path: ${{ steps.detect-project.outputs.cache_path }}
+          key: ${{ runner.os }}-nextjs-${{ hashFiles(steps.detect-project.outputs.lock_path) }}-${{ hashFiles('**.[jt]s', '**.[jt]sx') }}
+          restore-keys: |
+            ${{ runner.os }}-nextjs-${{ hashFiles(steps.detect-project.outputs.lock_path) }}-
+
+      - name: Install dependencies
+        working-directory: ${{ steps.detect-project.outputs.project_dir }}
+        run: ${{ steps.detect-project.outputs.manager }} ${{ steps.detect-project.outputs.command }}
+
+      - name: Build static export
+        working-directory: ${{ steps.detect-project.outputs.project_dir }}
+        env:
+          NEXT_PUBLIC_BASE_PATH: ${{ steps.pages.outputs.base_path }}
+        run: ${{ steps.detect-project.outputs.manager }} run build
+
+      - name: Verify export output
+        shell: bash
+        run: |
+          echo "Project directory: ${{ steps.detect-project.outputs.project_dir }}"
+          echo "Export directory: ${{ steps.detect-project.outputs.out_path }}"
+          if [ -d "${{ steps.detect-project.outputs.out_path }}" ]; then
+            ls -la "${{ steps.detect-project.outputs.out_path }}"
+          else
+            echo "Export directory was not created"
+            exit 1
+          fi
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ${{ steps.detect-project.outputs.out_path }}
+
+  # Deployment job
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
