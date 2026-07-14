@@ -17,13 +17,15 @@ export default function PortfolioGallery() {
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
 
   const categories = ["All", "Kitchen", "Bedroom", "Living Room", "Office", "Wardrobes", "Dining"];
+  const publicPathPrefix = (process.env.PUBLIC_URL || process.env.NEXT_PUBLIC_BASE_PATH || "").replace(/\/$/, "");
+  const withPublicPath = (path: string) => path.startsWith("http") ? path : `${publicPathPrefix}${path}`;
 
   const projects: ProjectItem[] = [
     {
       id: 1,
       title: "Gilded Glossy Modular Kitchen",
       category: "Kitchen",
-      image: "/project-kitchen-1.png",
+      image:  withPublicPath("/project-kitchen-1.png"),
       size: "medium",
     },
     {
@@ -37,7 +39,7 @@ export default function PortfolioGallery() {
       id: 3,
       title: "Bespoke Walnut TV Console & Lounge",
       category: "Living Room",
-      image: "/project-living-1.jpg",
+      image:  withPublicPath("/project-living-1.jpg"),
       size: "small",
     },
     {
@@ -51,7 +53,7 @@ export default function PortfolioGallery() {
       id: 5,
       title: "Elegant Tall Modular Wardrobe",
       category: "Wardrobes",
-      image: "/project-wardrobe-1.png",
+      image:  withPublicPath("/project-wardrobe-1.png"),
       size: "large",
     },
     {
@@ -65,7 +67,7 @@ export default function PortfolioGallery() {
       id: 8,
       title: "Curved Pattern Sliding Wardrobe",
       category: "Wardrobes",
-      image: "/project-wardrobe-2.png",
+      image:  withPublicPath("/project-wardrobe-2.png"),
       size: "medium",
     },
     {
