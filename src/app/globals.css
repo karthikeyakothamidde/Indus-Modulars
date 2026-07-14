@@ -1,0 +1,79 @@
+@import "tailwindcss";
+
+:root {
+  --background: #F5F5F7; /* Premium Light Grey background */
+  --foreground: #1A3B36; /* Forest Teal text */
+  --font-playfair: "Playfair Display", serif;
+  --font-inter: "Inter", sans-serif;
+}
+
+@theme inline {
+  --font-serif: var(--font-playfair), serif;
+  --font-sans: var(--font-inter), sans-serif;
+  
+  --color-gold: #A26F54; /* Terracotta logo color */
+  --color-deep-red: #C93D5A;
+  --color-warm-ivory: #F5F5F7; /* Mapped to Premium Light Grey */
+  --color-charcoal-black: #1A3B36; /* Forest Teal logo color */
+  --color-charcoal-light: #244C46; /* Lighter Forest Teal */
+  
+  --animate-pulse-slow: pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  --animate-float: float 6s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-inter), sans-serif;
+  overflow-x: hidden;
+  scroll-behavior: smooth;
+}
+
+/* Custom Scrollbar for Luxury Experience */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #1A3B36; /* Forest Teal */
+}
+::-webkit-scrollbar-thumb {
+  background: #A26F54; /* Terracotta */
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #8F5F45; /* Darker Terracotta */
+}
+
+/* Custom Utilities for Glassmorphism */
+.glass-panel {
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.glass-panel-dark {
+  background: rgba(26, 59, 54, 0.75); /* Forest Teal base */
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(162, 111, 84, 0.2); /* Terracotta border */
+}
+
+.glass-card-gold {
+  background: rgba(26, 59, 54, 0.85); /* Forest Teal base */
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(162, 111, 84, 0.35); /* Terracotta border */
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+}
+
+/* Text stroke for large elegant typography */
+.text-stroke-gold {
+  -webkit-text-stroke: 1px #A26F54;
+  color: transparent;
+}
+
