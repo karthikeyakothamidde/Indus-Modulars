@@ -19,17 +19,25 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Indus Modulars | Smart Modular, Seamless Spaces | Luxury Interior Design",
-  description: "We transform ordinary spaces into timeless interiors crafted around your lifestyle. Award-winning luxury modular kitchens, wardrobes, and living space designs.",
+  title: "Indus Modulars | Premium Modular Kitchens & Interiors",
+  description: "Premium modular kitchens, wardrobes & luxury home interiors in Hyderabad. Elevate your space with factory-finished precision & smart designs.",
   keywords: ["luxury interior design", "modular kitchen", "smart wardrobes", "premium home interiors", "Indus Modulars"],
   authors: [{ name: "Indus Modulars" }],
   openGraph: {
-    title: "Indus Modulars | Smart Modular, Seamless Spaces | Luxury Interior Design",
-    description: "Premium modular kitchens, custom wardrobes, and high-end living spaces designed for modern luxury.",
-    url: "https://indusmodulars.com",
+    title: "Indus Modulars | Premium Modular Kitchens & Interiors",
+    description: "Premium modular kitchens, wardrobes & luxury home interiors in Hyderabad. Elevate your space with factory-finished precision & smart designs.",
+    url: "https://indusmodulars.in",
     siteName: "Indus Modulars",
     locale: "en_US",
     type: "website",
+    images: [
+      {
+        url: "/indusmodularslogo.jpeg",
+        width: 1200,
+        height: 630,
+        alt: "Indus Modulars Logo",
+      },
+    ],
   },
 };
 
